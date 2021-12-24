@@ -91,7 +91,7 @@ Linux - ручное удаление файлов, уникальных для 
 6) журналы(сбор информации о событиях в системе)
 
 ПО для мониторинга:
-1)оперативные(task scheduler, top)
+1) оперативные(task scheduler, top)
 2) локальные(monit, munin, netdata)
 3) централизованные(zabbix, icigna, tivolli, MS System Center)
 
@@ -126,33 +126,30 @@ Zabbix:
 - сотни-сетевые ФС
 
 Установка Zabbix
-a. Устанавливаем репозиторий Zabbix
-wget https://repo.zabbix.com/zabbix/5.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.4-1+ubuntu20.04_all.deb
-dpkg -i zabbix-release_5.4-1+ubuntu20.04_all.deb
-apt update
+1) Устанавливаем репозиторий Zabbix
+- wget https://repo.zabbix.com/zabbix/5.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.4-1+ubuntu20.04_all.deb
+- dpkg -i zabbix-release_5.4-1+ubuntu20.04_all.deb
+- apt update
 
-b. Установливаем Zabbix сервер, веб-интерфейс и агент
-apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent
-c. Создаем базу данных
-Установливаем и запускаем сервер базы данных.
+2) Установливаем Zabbix сервер, веб-интерфейс и агент
+- apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent
+3)  Создаем базу данных
+- Установливаем и запускаем сервер базы данных.
+4) Выполняем следующие комманды на хосте, где будет распологаться база данных.
+- mysql -uroot -p
+- password
+- mysql> create database zabbix character set utf8 collate utf8_bin;
+- mysql> create user zabbix@localhost identified by 'password';
+- mysql> grant all privileges on zabbix.* to zabbix@localhost;
+- mysql> quit;
 
-Выполняем следующие комманды на хосте, где будет распологаться база данных.
-
-# mysql -uroot -p
-password
-mysql> create database zabbix character set utf8 collate utf8_bin;
-mysql> create user zabbix@localhost identified by 'password';
-mysql> grant all privileges on zabbix.* to zabbix@localhost;
-mysql> quit;
-
-zcat /usr/share/doc/zabbix-sql-scripts/mysql/create.sql.gz | mysql -uzabbix -p zabbix
-d. Настраиваем базу данных для Zabbix
-Редакируем файл /etc/zabbix/zabbix_server.conf
-
-DBPassword=password
-e. Запускаем процессы Zabbix сервера и агента
-systemctl restart zabbix-server zabbix-agent apache2
-systemctl enable zabbix-server zabbix-agent apache2
+- zcat /usr/share/doc/zabbix-sql-scripts/mysql/create.sql.gz | mysql -uzabbix -p zabbix
+5)  Настраиваем базу данных для Zabbix
+6) Редакируем файл /etc/zabbix/zabbix_server.conf
+7) DBPassword=password
+8)  Запускаем процессы Zabbix сервера и агента
+- systemctl restart zabbix-server zabbix-agent apache2
+- systemctl enable zabbix-server zabbix-agent apache2
 
 
 ## lesson 7.12
